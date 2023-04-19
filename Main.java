@@ -7,7 +7,7 @@ class Main {
         String name = sc.nextLine();
     
         while (true) {
-            System.out.println ("\nEnter the shape and dimension : ".toUpperCase());
+            System.out.println ("\nEnter the shape and dimension : \n".toUpperCase());
             String input = sc.nextLine();
             if (haveToQuit(input)) break;
             handleInput(input, name);
@@ -23,37 +23,28 @@ class Main {
         String splitted[] = input.split(" ");
         String shape = splitted[0].toLowerCase();
         boolean canFit;
+        Shapes shapeObj = null;
 
         switch (shape) {
             case "circle":
-                canFit = handleCircle(splitted, name);
+                shapeObj = ParseInput.parseCircle(splitted);
                 break;
             case "rectangle":
-                canFit = handleRectangle(splitted, name);
+                shapeObj = ParseInput.parseRectangle(splitted);
                 break;
             case "square":
-                canFit = handleSquare(splitted, name);
+                shapeObj = ParseInput.parseSquare(splitted);
                 break;
             default:
-                System.out.println("Invalid shape");
                 break;
         }
         
+        if (shapeObj == null) {
+            System.out.println("\nInvalid Shape");
+            return;
+        }
+
+        canFit = shapeObj.canFit(name);
         System.out.println(canFit ? "Can Fit" : "Can't Fit");
-    }
-
-    static boolean handleCircle (String[] splitted, String name) {
-        Circle circle = ParseInput.parseCircle(splitted);
-        return circle.canFit(name);
-    }
-
-    static boolean handleRectangle (String[] splitted, String name) {
-        Rectangle rectangle = ParseInput.parseRectangle(splitted);
-        return rectangle.canFit(name);
-    }
-
-    static boolean handleSquare (String[] splitted, String name) {
-        Square square = ParseInput.parseSquare(splitted);
-        return square.canFit(name);
     }
 }
